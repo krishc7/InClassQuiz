@@ -16,7 +16,6 @@ int main() {
 
     srand(time(NULL));
 
-    FILE *fp;
 
     // Loop while Quit (option 3) is not chosen
     do {
@@ -39,7 +38,7 @@ int main() {
             // If user inputs 'q', quit the current game and mark ass loss
             if(x == 'q') {
                 lost++;
-                tries = 0;
+                temp = 0;
                 break;
             }
             else if(guess > number) {
@@ -53,7 +52,7 @@ int main() {
                 printf("\nCorrect!\n");
                 won++;
                 tries += temp;
-                tries = 0;
+                temp = 0;
                 break;
                 }
             } while((guess != number));
