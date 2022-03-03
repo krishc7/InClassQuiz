@@ -6,7 +6,7 @@
 int main() {
 
     // Declare variables to hold various data points
-    int input, number, guess;
+    int input, number, guess, prevMax;
     int temp = 0;
     int tries = 0;
     int won = 0;
@@ -16,12 +16,9 @@ int main() {
 
     srand(time(NULL));
 
-    FILE *fp;
-
-    fp = fopen("/data.txt", "w+");
-    fprintf(fp, "This is testing for fprintf...\n");
-    fputs("This is testing for fputs...\n", fp);
-    fclose(fp);
+    // data.txt will be used to store previous max value which is loaded into prevMax variable
+    FILE *fp = fopen("data.txt", "w+");
+    fscanf(fp, "%d", &prevMax);
 
     // Loop while Quit (option 3) is not chosen
     do {
@@ -44,7 +41,7 @@ int main() {
             // If user inputs 'q', quit the current game and mark ass loss
             if(x == 'q') {
                 lost++;
-                tries = 0;
+                temp = 0;
                 break;
             }
             else if(guess > number) {
@@ -58,7 +55,7 @@ int main() {
                 printf("\nCorrect!\n");
                 won++;
                 tries += temp;
-                tries = 0;
+                temp = 0;
                 break;
                 }
             } while((guess != number));
@@ -68,9 +65,11 @@ int main() {
             // Ask user for max value until one in valid range is given
             do {
             printf("\nThe max value you can set is %d and max value cannot be negative.", INT_MAX);
+            printf("\nThe maximum value from the previous execution was %d", prevMax);
             printf("\nPlease enter a new maximum value. ");
             scanf("%d", &max);
             } while(max > INT_MAX || max < 0);
+            fprintf(fp, "%d", max);
         }
 
     } while(input != 3);
@@ -80,5 +79,6 @@ int main() {
     printf("\nTotal number of losses: %d", lost);
     printf("\nNumber of guesses taken to win: %d", tries);
 
+    fclose(fp);
     return 0;
 }
